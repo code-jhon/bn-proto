@@ -14,11 +14,17 @@ export type Chip = {
   power?: number;
 };
 
+export type HPData = {
+  current: number;
+  max: number;
+};
+
 export type BattleEvent =
   | { type: "GAUGE_CHANGED"; value: number }
   | { type: "CHIP_MENU_OPENED"; chips: Chip[] }
   | { type: "CHIP_SELECTED"; chip: Chip }
-  | { type: "LOG"; message: string };
+  | { type: "LOG"; message: string }
+  | { type: "HP_CHANGED"; player: HPData; enemy: HPData };
 
 export interface IBattleBus {
   emit(evt: BattleEvent): void;

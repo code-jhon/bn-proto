@@ -8,6 +8,8 @@ This project implements the core mechanics of a Battle Network-style combat syst
 - Grid-based movement on a 3x3 per-side battlefield
 - Custom Gauge system for chip selection timing
 - Battle Chip system with random chip draws
+- HP status bars for player and enemy with animated health tracking
+- Dynamic UI panel that expands when gauge is full
 - Event-driven communication between React UI and Phaser game engine
 
 ## Tech Stack
@@ -99,6 +101,7 @@ interface IBattleBus {
 | `CHIP_MENU_OPENED` | Phaser → React | Opens chip selection with hand |
 | `CHIP_SELECTED` | React → Phaser | Player selected a chip |
 | `LOG` | Phaser → React | Battle log messages |
+| `HP_CHANGED` | Phaser → React | Player and enemy HP data (current/max) |
 
 ### Grid System
 
@@ -162,8 +165,10 @@ Mounts the Phaser game instance into a div. Handles cleanup on unmount.
 
 ### `<BattleHUD />`
 Displays:
-- Custom Gauge progress bar
-- Chip selection menu (when open)
+- **HP Status Bars** (top-left): Player (green) and Enemy (red) health bars with current/max values
+- **Custom Gauge** progress bar (right panel)
+- **Chip selection menu** (when gauge is full)
+- **Dynamic panel height**: Expands from 80px to 480px when gauge reaches 100%
 - Battle logs (last 6 messages)
 
 ## Phaser Scenes
@@ -198,10 +203,13 @@ All core types are defined in `src/game/phaser/core/types.ts`:
 - `Cell`: Grid coordinates
 - `Vec2`: Pixel coordinates
 - `Chip`: Battle chip definition
-- `BattleEvent`: Union type for all events
+- `HPData`: Health point data (`{ current: number; max: number }`)
+- `BattleEvent`: Union type for all events (GAUGE_CHANGED, CHIP_MENU_OPENED, CHIP_SELECTED, LOG, HP_CHANGED)
 
 ## Future Improvements
 
+- [x] HP status bars for player and enemy
+- [x] Dynamic panel height based on gauge state
 - [ ] Implement Sword melee attack
 - [ ] Implement Guard defensive chip
 - [ ] Add enemy AI movement and attacks
@@ -211,6 +219,7 @@ All core types are defined in `src/game/phaser/core/types.ts`:
 - [ ] Battlefield panel types (cracked, holy, etc.)
 - [ ] Sound effects and music
 - [ ] Sprite-based graphics
+- [ ] Player damage and game over state
 
 ## License
 

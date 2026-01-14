@@ -8,6 +8,7 @@ type Actor = {
   cell: Cell;
   sprite: Phaser.GameObjects.Rectangle;
   hp: number;
+  maxHp: number;
 };
 
 export class BattleScene extends Phaser.Scene {
@@ -44,10 +45,11 @@ export class BattleScene extends Phaser.Scene {
 
     this.drawBoard();
 
-    this.player = this.spawnActor("PLAYER", { col: 1, row: 1 }, 200, 0x4ade80);
-    this.enemy = this.spawnActor("ENEMY", { col: 1, row: 1 }, 200, 0xf87171);
+    this.player = this.spawnActor("PLAYER", { col: 1, row: 1 }, 200, 200, 0x4ade80);
+    this.enemy = this.spawnActor("ENEMY", { col: 1, row: 1 }, 200, 200, 0xf87171);
 
     this.bus.emit({ type: "GAUGE_CHANGED", value: this.gauge });
+    this.emitHPChanged();
 
     // UI -> Game: escuchar selección de chip (se emite desde React)
     this.bus.subscribe((evt) => {
@@ -103,10 +105,10 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private spawnActor(team: Team, cell: Cell, hp: number, color: number): Actor {
+  private spawnActor(team: Team, cell: Cell, hp: number, maxHp: number, color: number): Actor {
     const p = cellToWorld(team, cell, this.cfg);
     const sprite = this.add.rectangle(p.x, p.y, 44, 44, color).setOrigin(0.5);
-    return { team, cell, sprite, hp };
+    return { team, cell, sprite, hp, maxHp };
   }
 
   private moveActor(actor: Actor, next: Cell): void {
@@ -184,6 +186,7 @@ export class BattleScene extends Phaser.Scene {
   private damageEnemy(amount: number): void {
     this.enemy.hp = Math.max(0, this.enemy.hp - amount);
     this.bus.emit({ type: "LOG", message: `Enemy HP: ${this.enemy.hp}` });
+    this.emitHPChanged();
 
     // feedback
     this.tweens.add({
@@ -192,6 +195,14 @@ export class BattleScene extends Phaser.Scene {
       scaleY: 1.15,
       yoyo: true,
       duration: 80,
+    });
+  }
+
+  private emitHPChanged(): void {
+    this.bus.emit({
+      type: "HP_CHANGED",
+      player: { current: this.player.hp, max: this.player.maxHp },
+      enemy: { current: this.enemy.hp, max: this.enemy.maxHp },
     });
   }
 }
