@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { BattleEvent, Chip, HPData, IBattleBus } from "../game/phaser/core/types";
 
 type Props = { bus: IBattleBus };
+
+const CHIP_HOTKEYS = ["J", "K", "L"] as const;
 
 export function BattleHUD({ bus }: Props) {
   const [gauge, setGauge] = useState(0);
@@ -9,6 +11,10 @@ export function BattleHUD({ bus }: Props) {
   const [logs, setLogs] = useState<string[]>([]);
   const [playerHP, setPlayerHP] = useState<HPData>({ current: 200, max: 200 });
   const [enemyHP, setEnemyHP] = useState<HPData>({ current: 200, max: 200 });
+
+  const selectChip = useCallback((chip: Chip) => {
+    bus.emit({ type: "CHIP_SELECTED", chip });
+  }, [bus]);
 
   useEffect(() => {
     return bus.subscribe((evt: BattleEvent) => {
@@ -22,6 +28,22 @@ export function BattleHUD({ bus }: Props) {
       }
     });
   }, [bus]);
+
+  // Keyboard shortcuts for chip selection (J, K, L)
+  useEffect(() => {
+    if (!hand) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key.toUpperCase();
+      const index = CHIP_HOTKEYS.indexOf(key as typeof CHIP_HOTKEYS[number]);
+      if (index !== -1 && hand[index]) {
+        selectChip(hand[index]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [hand, selectChip]);
 
   const gaugePct = useMemo(() => Math.round(gauge * 100), [gauge]);
   const playerHPPct = useMemo(() => Math.round((playerHP.current / playerHP.max) * 100), [playerHP]);
@@ -47,13 +69,17 @@ export function BattleHUD({ bus }: Props) {
           <div style={styles.menu}>
             <div style={styles.menuTitle}>Select a Chip</div>
             <div style={styles.chips}>
-              {hand.map((c) => (
+              {hand.map((c, index) => (
                 <button
                   key={c.id}
                   style={styles.chipBtn}
-                  onClick={() => bus.emit({ type: "CHIP_SELECTED", chip: c })}
+                  onClick={() => selectChip(c)}
                 >
-                  <div style={styles.chipName}>{c.name}</div>
+                  <div style={styles.chipHeader}>
+                    <span style={styles.chipHotkey}>{CHIP_HOTKEYS[index]}</span>
+                    <i className={c.icon} style={styles.chipIcon}></i>
+                    <div style={styles.chipName}>{c.name}</div>
+                  </div>
                   <div style={styles.chipDesc}>{c.description}</div>
                 </button>
               ))}
@@ -195,8 +221,33 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     color: "inherit",
   },
+  chipHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+  },
+  chipHotkey: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    background: "rgba(96, 165, 250, 0.2)",
+    border: "1px solid rgba(96, 165, 250, 0.4)",
+    color: "#60a5fa",
+    fontSize: 11,
+    fontWeight: 700,
+    fontFamily: "monospace",
+  },
+  chipIcon: {
+    fontSize: 16,
+    color: "#60a5fa",
+    width: 20,
+    textAlign: "center",
+  },
   chipName: { fontWeight: 600, fontSize: 14 },
-  chipDesc: { fontSize: 12, color: "#94a3b8", marginTop: 2 },
+  chipDesc: { fontSize: 12, color: "#94a3b8", marginTop: 4, marginLeft: 28 },
 
   logs: { marginTop: 12, borderTop: "1px solid rgba(148,163,184,0.16)", paddingTop: 8 },
   logLine: { fontSize: 12, color: "#cbd5e1", marginTop: 4 },

@@ -10,7 +10,7 @@ export type Chip = {
   id: ChipId;
   name: string;
   description: string;
-  // Efecto simple para el prototipo
+  icon: string; // Font Awesome icon class
   power?: number;
 };
 
