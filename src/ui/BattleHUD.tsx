@@ -27,9 +27,9 @@ export function BattleHUD({ bus }: Props) {
   const playerHPPct = useMemo(() => Math.round((playerHP.current / playerHP.max) * 100), [playerHP]);
   const enemyHPPct = useMemo(() => Math.round((enemyHP.current / enemyHP.max) * 100), [enemyHP]);
 
-  const panelHeight = gaugePct >= 100 ? 480 : 80;
-
-  const isVisible = gaugePct >= 100;
+  // Panel expands when player presses Z (chip menu opens)
+  const isChipMenuOpen = hand !== null;
+  const panelHeight = isChipMenuOpen ? 480 : 80;
 
   return (
     <div style={styles.root}>
@@ -84,7 +84,7 @@ export function BattleHUD({ bus }: Props) {
         )}
 
         <div style={{...styles.logs, display: "none"}}>
-          {isVisible && logs.map((l, i) => (
+          {isChipMenuOpen && logs.map((l, i) => (
             <div key={i} style={styles.logLine}>
               {l}
             </div>

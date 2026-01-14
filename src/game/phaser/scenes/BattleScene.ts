@@ -98,8 +98,9 @@ export class BattleScene extends Phaser.Scene {
     drawSide(this.cfg.origin.x);
     drawSide(this.cfg.origin.x + this.cfg.colsPerSide * this.cfg.cellSize + this.cfg.gap);
 
-    this.add.text(140, 60, "BN Web Prototype", { fontSize: "20px", color: "#e2e8f0" });
-    this.add.text(140, 86, "Arrows: move | Z: chip menu when gauge full | X: cannon", {
+    const canvasHeight = this.scale.height;
+    this.add.text(140, canvasHeight - 60, "BattleNetwork Web Prototype", { fontSize: "20px", color: "#e2e8f0" });
+    this.add.text(140, canvasHeight - 36, "Arrows: move | Z: chip menu when gauge full | X: cannon", {
       fontSize: "14px",
       color: "#94a3b8",
     });
