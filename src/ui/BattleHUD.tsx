@@ -33,29 +33,7 @@ export function BattleHUD({ bus }: Props) {
 
   return (
     <div style={styles.root}>
-      {/* HP Status Bars - Top Left */}
-      <div style={styles.hpContainer}>
-        <div style={styles.hpPanel}>
-          <div style={styles.hpRow}>
-            <div style={styles.hpLabel}>PLAYER</div>
-            <div style={styles.hpValue}>{playerHP.current}/{playerHP.max}</div>
-          </div>
-          <div style={styles.hpBarOuter}>
-            <div style={{ ...styles.hpBarInnerPlayer, width: `${playerHPPct}%` }} />
-          </div>
-        </div>
-        <div style={styles.hpPanel}>
-          <div style={styles.hpRow}>
-            <div style={styles.hpLabel}>ENEMY</div>
-            <div style={styles.hpValue}>{enemyHP.current}/{enemyHP.max}</div>
-          </div>
-          <div style={styles.hpBarOuter}>
-            <div style={{ ...styles.hpBarInnerEnemy, width: `${enemyHPPct}%` }} />
-          </div>
-        </div>
-      </div>
-
-      {/* Right Panel */}
+      {/* Left Panel - Gauge & Chips */}
       <div style={{...styles.panel, ...styles.panelContainer, height: panelHeight}}>
         <div style={styles.row}>
           <div style={styles.label}>Custom Gauge</div>
@@ -89,6 +67,28 @@ export function BattleHUD({ bus }: Props) {
               {l}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* HP Status Bars - Top Right */}
+      <div style={styles.hpContainer}>
+        <div style={styles.hpPanel}>
+          <div style={styles.hpRow}>
+            <div style={styles.hpLabel}>PLAYER</div>
+            <div style={styles.hpValue}>{playerHP.current}/{playerHP.max}</div>
+          </div>
+          <div style={styles.hpBarOuter}>
+            <div style={{ ...styles.hpBarInnerPlayer, width: `${playerHPPct}%` }} />
+          </div>
+        </div>
+        <div style={styles.hpPanel}>
+          <div style={styles.hpRow}>
+            <div style={styles.hpLabel}>ENEMY</div>
+            <div style={styles.hpValue}>{enemyHP.current}/{enemyHP.max}</div>
+          </div>
+          <div style={styles.hpBarOuter}>
+            <div style={{ ...styles.hpBarInnerEnemy, width: `${enemyHPPct}%` }} />
+          </div>
         </div>
       </div>
     </div>
