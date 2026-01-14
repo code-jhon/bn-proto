@@ -1,4 +1,3 @@
-// src/game/phaser/scenes/BattleScene.ts
 import Phaser from "phaser";
 import type { Cell, Chip, IBattleBus, Team } from "../core/types";
 import { cellToWorld, type GridConfig } from "../core/grid";

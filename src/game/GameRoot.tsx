@@ -1,4 +1,3 @@
-// src/game/GameRoot.tsx
 import { useEffect, useRef } from "react";
 import type { IBattleBus } from "./phaser/core/types";
 import { createGame } from "./phaser/createGame";

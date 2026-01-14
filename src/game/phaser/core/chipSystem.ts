@@ -1,4 +1,3 @@
-// src/game/phaser/core/chipSystem.ts
 import type { Chip } from "./types";
 
 export const CHIP_LIBRARY: Record<string, Chip> = {

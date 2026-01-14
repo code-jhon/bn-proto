@@ -1,4 +1,3 @@
-// src/game/phaser/core/grid.ts
 import type { Cell, Team, Vec2 } from "./types";
 
 export type GridConfig = {

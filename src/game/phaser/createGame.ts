@@ -1,4 +1,3 @@
-// src/game/phaser/createGame.ts
 import Phaser from "phaser";
 import { BattleScene } from "./scenes/BattleScene";
 import type { IBattleBus } from "./core/types";

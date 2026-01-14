@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useMemo } from "react";
 import { GameRoot } from "./game/GameRoot";
 import { BattleHUD } from "./ui/BattleHUD";

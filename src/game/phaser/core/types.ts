@@ -1,4 +1,3 @@
-// src/game/phaser/core/types.ts
 export type Team = "PLAYER" | "ENEMY";
 
 export type Cell = { col: number; row: number };

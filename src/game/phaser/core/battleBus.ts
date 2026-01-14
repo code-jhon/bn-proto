@@ -1,4 +1,3 @@
-// src/game/phaser/core/battleBus.ts
 import type { BattleEvent, IBattleBus } from "./types";
 
 export class BattleBus implements IBattleBus {

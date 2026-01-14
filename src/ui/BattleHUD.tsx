@@ -1,4 +1,3 @@
-// src/ui/BattleHUD.tsx
 import { useEffect, useMemo, useState } from "react";
 import type { BattleEvent, Chip, IBattleBus } from "../game/phaser/core/types";
 
